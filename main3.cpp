@@ -117,15 +117,15 @@ int main()
     cout << endl;
     
     cout << "Test # 5" << endl;
-    Expenses* expense5 = new Expenses(-1000000000, true, "15/10/2020", FOOD, CASH, "Invalid expenses test"); 
+    Expenses* expense5 = new Expenses(-1000000000, true, "15/10/2020", FOOD, CASH, "Invalid expenses test");
     ac.addTransactionToLedger(expense5);
     cout << endl;
 
-    cout << "Final clean ups" << endl; 
+    cout << "Final clean ups" << endl;
     ac.getIncomeLedger()->printAllTransactions();
     ac.getExpensesLedger()->printAllTransactions();
     
     delete expense4;
     
     return 0;
-} 
+}

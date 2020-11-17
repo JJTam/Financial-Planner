@@ -11,7 +11,7 @@ Transaction::Transaction(double amount, bool hasRealized, string date, string de
 Transaction::~Transaction() {
     // Transaction with 1200 dollars on 11/10/2020 deleted.
     cout << "Transaction with " << this->amount
-         << "dollars on " << this->date << " deleted." << endl;
+         << " dollars on " << this->date << " deleted." << endl;
 }
 
 ostream& operator<< (ostream &out, const Transaction &trans) {
@@ -22,7 +22,7 @@ void Transaction::setAmount(double amount) {
     // Transaction with 1200 dollars on 11/10/2020 added.
     this->amount = amount;
     cout << "Transaction with " << this->amount
-         << "dollars on " << this->date << " added." << endl;
+         << " dollars on " << this->date << " added." << endl;
 }
 
 double Transaction::getAmount() const {
@@ -36,7 +36,7 @@ bool Transaction::getHasRealized() {
 void Transaction::setHasRealized() {
     // The transaction has realized already!
     this->hasRealized = true;
-    cout << "Transaction has realized already!" << endl;
+    cout << "The transaction has realized already!" << endl;
 }
 
 void Transaction::setDescriptions(string str) {

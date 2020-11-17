@@ -5,6 +5,7 @@
 using std::string;
 using namespace std;
 
+/*
 
 int main()
 {
@@ -43,4 +44,4 @@ int main()
     delete income2;
 
     return 0;
-} 
+} */

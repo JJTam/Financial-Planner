@@ -5,7 +5,7 @@
 using std::string;
 using namespace std;
 
-
+/*
 int main()
 {
     cout << "To award your hard work, it is a good idea to buy yourself some snacks to enjoy! :D" <<endl;
@@ -40,4 +40,4 @@ int main()
     delete expense2;
     
     return 0;
-} 
+}*/

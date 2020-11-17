@@ -6,6 +6,8 @@ Income::Income(double amount, bool hasRealized, string date, TransactionCategory
     // Income with amount 5000 dated 11/10/2020 initialized.
     this->sources = ic;
     this->sumToWhere = gt;
+    cout << "Income with amount " << this->amount
+         << " dated " << this->date << " initialized." << endl;
 }
 
 Income::~Income() {
