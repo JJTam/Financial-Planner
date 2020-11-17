@@ -1,0 +1,3 @@
+C:/Users/Mr/CLion-Projects-workspace/COMP_2012_PA2(2020Fall)/cmake-build-debug/CMakeFiles/COMP_2012_PA2_2020Fall_.dir
+C:/Users/Mr/CLion-Projects-workspace/COMP_2012_PA2(2020Fall)/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Mr/CLion-Projects-workspace/COMP_2012_PA2(2020Fall)/cmake-build-debug/CMakeFiles/rebuild_cache.dir
