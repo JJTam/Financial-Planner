@@ -4,13 +4,13 @@
 
 Ledger::Ledger(int maxNumTrans, int currNumTrans) {
     this->maxNumTrans = maxNumTrans;
-    this->currNumTrans = currNumTrans;
+    this->currNumTrans = currNumTrans;  // 0
     this->allTransactions = nullptr;
 }
 
 Ledger::~Ledger() {
     if (allTransactions) {  // if have transactions
-        for (int i = 1; i <= currNumTrans; ++i) {
+        for (int i = 0; i < currNumTrans; ++i) {
             if (allTransactions[i]) {
                 delete allTransactions[i];
                 allTransactions[i] = nullptr;
@@ -46,7 +46,7 @@ void Ledger::updateTransactionInLedger(Transaction* oldTrans, Transaction* newTr
     // here are 2 methods to do this task(use one only):
     // ===============================================================
     // method 1 (use helper function)
-    for (int i = 1; i <= currNumTrans; ++i) {
+    for (int i = 0; i < currNumTrans; ++i) {
 /*        if (allTransactions[i] == oldTrans) {  // it may compare the address of two objects, but not sure it works or not
             allTransactions[i] = newTrans;  // shallow copying
             return;
@@ -57,7 +57,7 @@ void Ledger::updateTransactionInLedger(Transaction* oldTrans, Transaction* newTr
             return;
         }
 
-        if (i == currNumTrans) {
+        if (i == currNumTrans - 1) {
             cout << "No matching old transaction found!" << endl;
             return;
         }
@@ -65,17 +65,16 @@ void Ledger::updateTransactionInLedger(Transaction* oldTrans, Transaction* newTr
 
     // ===============================================================
     // method 2 (not use helper function)
-/*    for (int i = 1; i <= currNumTrans; ++i) {  // check in details
+/*    for (int i = 0; i < currNumTrans; ++i) {  // check in details
         bool checkAmount = fabs(allTransactions[i]->getAmount() - oldTrans->getAmount()) < 0.00001;
         bool checkHasRealized = allTransactions[i]->getHasRealized() == oldTrans->getHasRealized();
         bool checkDate = allTransactions[i]->getDate() == oldTrans->getDate();
         if (checkAmount && checkHasRealized && checkDate) {  // if all are the same
-            delete allTransactions[i];  // same as delete oldTrans;
             allTransactions[i] = newTrans;  // shallow copying
             return;
         }
 
-        if (i == currNumTrans) {
+        if (i == currNumTrans - 1) {
             cout << "No matching old transaction found!" << endl;
             return;
         }
@@ -90,11 +89,11 @@ void Ledger::addTransaction(Transaction* newTransaction) {  // added from accoun
         return;
     }
 
-    Transaction** newAllTransactions = new Transaction*[currNumTrans + 1];
-    for (int i = 1; i <= currNumTrans; ++i)  // shallow copying from the old list, if old list is empty then skip
+    Transaction** newAllTransactions = new Transaction*[++currNumTrans];
+    for (int i = 0; i < currNumTrans - 1; ++i)  // shallow copying from the old list, if old list is empty then skip
         newAllTransactions[i] = allTransactions[i];
 
-    newAllTransactions[++currNumTrans] = newTransaction;  // add the new one, shallow copying
+    newAllTransactions[currNumTrans - 1] = newTransaction;  // add the new one, shallow copying
 
     if (currNumTrans != 1)  // if it has old list, then delete the old list container
         delete [] allTransactions;
@@ -113,7 +112,7 @@ void Ledger::printAllTransactions() const {
     }
 
     else {
-        for (int i = 1; i <= currNumTrans; ++i) {
+        for (int i = 0; i < currNumTrans; ++i) {
             if (allTransactions[i]) {
                 cout << *allTransactions[i];  // call operate<< function to print
             }
@@ -122,8 +121,8 @@ void Ledger::printAllTransactions() const {
 
     // ===============================================================
     // method 2
-/*    if (allTransactions) {
-        for (int i = 1; i <= currNumTrans; ++i) {
+    /*if (allTransactions) {
+        for (int i = 0; i < currNumTrans; ++i) {
             if (allTransactions[i]) {
                 cout << *allTransactions[i];  // call operate<< function to print
             }
@@ -150,7 +149,7 @@ void Ledger::printRecentNTrans(int nTrans) const {
     }
 
     else {
-        for (int i = 0; i < nTrans; ++i) {  // print the last N transactions
+        for (int i = 1; i <= nTrans; ++i) {  // print the last N transactions
             cout << *allTransactions[currNumTrans - i];
         }
     }
@@ -175,49 +174,49 @@ void Ledger::removeSingleTransaction(int numTransact) {	// numTransact starts co
     // method 1
     if (currNumTrans - 1 != 0) {
         Transaction** newAllTransactions = new Transaction*[--currNumTrans];  // a smaller pointer array
-        for (int i = 0, j = 1; i < currNumTrans + 1; ++i) {
+        for (int i = 0, j = 0; i < currNumTrans + 1; ++i) {
             if (i == numTransact) {  // it is the to be deleted one, just skip
                 continue;
             }
-            newAllTransactions[j] = allTransactions[i + 1];  // shallow copying
+            newAllTransactions[j] = allTransactions[i];  // shallow copying
             ++j;
         }
-        delete allTransactions[numTransact + 1];  // delete the target
-        allTransactions[numTransact + 1] = nullptr;
+        delete allTransactions[numTransact];  // delete the target
+        allTransactions[numTransact] = nullptr;
         delete [] allTransactions;
         allTransactions = newAllTransactions;
     }
 
     else {   // If there are only one transaction, just deallocating the original list
-        delete allTransactions[numTransact + 1];
-        allTransactions[numTransact + 1] = nullptr;
+        delete allTransactions[numTransact];
+        allTransactions[numTransact] = nullptr;
         delete [] allTransactions;
         allTransactions = nullptr;
     }
 
     // ===============================================================
     // method 2
-/*    int currNum = currNumTrans - 1;
+    /*int currNum = currNumTrans - 1;
     if (currNum == 0) {  // If there are only one transaction, calling destructor explicitly
-        delete allTransactions[numTransact + 1];
-        allTransactions[numTransact + 1] = nullptr;
+        delete allTransactions[numTransact];
+        allTransactions[numTransact] = nullptr;
         delete [] allTransactions;
         allTransactions = nullptr;
     }
 
     else {
         Transaction** newAllTransactions = new Transaction*[currNum];  // a smaller pointer array
-        for (int i = 1; i <= numTransact; ++i) {
+        for (int i = 0; i < numTransact; ++i) {
             newAllTransactions[i] = allTransactions[i];  // shallow copying the upper half
         }
 
         for (int j = numTransact + 1; j < currNumTrans; ++j) {
-            newAllTransactions[j] = allTransactions[j + 1];  // shallow copying the lower half
+            newAllTransactions[j - 1] = allTransactions[j];  // shallow copying the lower half
         }
 
         --currNumTrans;
-        delete allTransactions[numTransact + 1];  // delete the target
-        allTransactions[numTransact + 1] = nullptr;
+        delete allTransactions[numTransact];  // delete the target
+        allTransactions[numTransact] = nullptr;
         delete [] allTransactions;
         allTransactions = newAllTransactions;
     }*/
@@ -238,7 +237,7 @@ void Ledger::printRealizedTransactions(bool realized) const {
     // here are 2 methods to do this task(use one only):
     // ===============================================================
     // method 1
-    for (int i = 1; i <= currNumTrans; ++i) {
+    for (int i = 0; i < currNumTrans; ++i) {
         if (allTransactions[i]->getHasRealized() == realized) {
             cout << *allTransactions[i]; // print out the transactions that specified by the realized
             if (realized) {  // realized transactions checking
@@ -249,35 +248,35 @@ void Ledger::printRealizedTransactions(bool realized) const {
             }
         }
 
-        if (i == currNumTrans && numOfRealized == 0 && realized) {
+        if (i == currNumTrans - 1 && numOfRealized == 0 && realized) {
             cout << "There is no realized transaction." << endl;
         }
-        else if (i == currNumTrans && numOfUnrealized == 0 && !realized) {
+        else if (i == currNumTrans - 1 && numOfUnrealized == 0 && !realized) {
             cout << "There is no unrealized transaction." << endl;
         }
     }
 
     // ===============================================================
     // method 2
-/*    if (realized) {  // realized transactions checking
-        for (int i = 1; i <= currNumTrans; ++i) {
+    /*if (realized) {  // realized transactions checking
+        for (int i = 0; i < currNumTrans; ++i) {
            if (allTransactions[i]->getHasRealized()) {
                cout << *allTransactions[i];  // print out realized transactions
                ++numOfRealized;
            }
-           if (i == currNumTrans && numOfRealized == 0) {
+           if (i == currNumTrans - 1 && numOfRealized == 0) {
                cout << "There is no realized transaction." << endl;
            }
         }
     }
 
     else {   // unrealized transactions checking
-        for (int i = 1; i <= currNumTrans; ++i) {
+        for (int i = 0; i < currNumTrans; ++i) {
             if (!allTransactions[i]->getHasRealized()) {
-                cout << allTransactions[i];  // print out unrealized transactions
+                cout << *allTransactions[i];  // print out unrealized transactions
                 ++numOfUnrealized;
             }
-            if (i == currNumTrans && numOfUnrealized == 0) {
+            if (i == currNumTrans - 1 && numOfUnrealized == 0) {
                 cout << "There is no unrealized transaction." << endl;
             }
         }
@@ -298,7 +297,7 @@ Transaction* Ledger::getTransactionByNum(int numTransact) {  // numTransact star
         return nullptr;
     }
 
-    return allTransactions[numTransact + 1];
+    return allTransactions[numTransact];
 }
 
 
